@@ -3,8 +3,12 @@ from resume import Resume
 from desription import JobDescription
 from matching_engine import MatchingAlgo
 
-resume_data = Resume('RiyajMuhammad_CV.pdf','itsmeboris/jobbert-base-cased-ner').get_data()
-job_description_data = JobDescription('https://wellfound.com/jobs/2844964-lead-nlp-scientist').get_data()
+#uploaded_file = st.file_uploader("Choose a file")
+#st.write('Job link provided is', title)
+file_path = "RiyajMuhammad_CV.pdf"
+job_url = "https://wellfound.com/jobs/2844964-lead-nlp-scientist"
+resume_data = Resume(file_path,'itsmeboris/jobbert-base-cased-ner').get_data()
+job_description_data = JobDescription(job_url).get_data()
 algorithm = MatchingAlgo('BAAI/bge-base-en-v1.5',256)
 
 def score(resume_data, job_description_data):
@@ -13,9 +17,10 @@ def score(resume_data, job_description_data):
     industry_match = min(0.8,algorithm.section_score(resume_data["Industry/domain"], job_description_data["Industry/domain"]))
     degree_match = min(0.8, algorithm.section_score(resume_data["Education degree"], job_description_data["Education degree"]))
     skills_match = min(0.8,algorithm.section_score(resume_data["Technical skills"], job_description_data["Technical skills"]))
-    return 1.25(0.2 *job_match+ 0.2*location_match+ 0.15*industry_match+ 0.25*degree_match + 0.2*skills_match)
+    return 1.25*float(0.2 *job_match+ 0.2*location_match+ 0.15*industry_match+ 0.25*degree_match + 0.2*skills_match)
 
-uploaded_file = st.file_uploader("Choose a file")
+#uploaded_file = st.file_uploader("Choose a file")
 
-title = st.text_input('Job Description link', 'https://wellfound.com/jobs/2844964-lead-nlp-scientist')
-st.write('Job link provided is', title)
+#title = st.text_input('Job Description link', 'https://wellfound.com/jobs/2844964-lead-nlp-scientist')
+#st.write('Job link provided is', title)
+print(score(resume_data, job_description_data))

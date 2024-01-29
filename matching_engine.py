@@ -57,7 +57,15 @@ class MatchingAlgo:
         return mean_pooled
         
         
-    def _find_similar_sentences(self, mean_pooled : np.ndarray) -> Set :
+    def _find_similar_sentences(self, mean_pooled : np.ndarray) -> nd.ndarray :
+        """Compute similarity between pair on embeddings.
+
+        Args:
+            mean_pooled (np.ndarray): Mean pooler output of couple of strings for which similarity is required.
+
+        Returns:
+            nd.ndarray: similarity array
+        """        
         similarity_array = cosine_similarity(
                 [mean_pooled[0]],
                 [mean_pooled[1]]
@@ -66,6 +74,16 @@ class MatchingAlgo:
     
 
     def section_score(self, string1: str, string2: str) -> float:
+        """Take two sentences tokenize them and generate emebddings by transformer and denoise with mask and 
+        compute cosine similarity and return score.
+
+        Args:
+            string1 (str): First string to be matched
+            string2 (str):  Second string to be matched
+
+        Returns:
+            float: cosine similarity between strings
+        """        
         sentences = [string1, string2]
         # initialize dictionary: stores tokenized sentences
         tokens = self._tokenization(sentences)

@@ -15,7 +15,7 @@ class JobDescription:
         self._processed_data = self._process_data()
     
     def _get_data(self)-> requests.Response:
-        """Get job description page.
+        """Get job description page from welllfound.
 
         Returns:
             requests.Response: Job jescription page
@@ -23,6 +23,12 @@ class JobDescription:
         return requests.get(self.url)
 
     def _process_data(self)-> Dict:
+        """Request page and find the script section of job description page.
+        Then catch dictionary string and convert it into a json.
+
+        Returns:
+            Dict: Dictionary of diffrent job description sections.
+        """        
         page = self._get_data()
         soup = BeautifulSoup(page.content, "html.parser")
         required_data = soup.find_all('script', type='application/ld+json')[0]
@@ -31,15 +37,39 @@ class JobDescription:
         return json.loads(matches.group(1))
 
     def _get_jobtitle(self)-> str:
+        """Select Job title section of processed data of job description. and return 
+        Job title of published vacancy.
+
+        Returns:
+            str: Job title string.
+        """        
         return self._processed_data["title"]
 
     def _get_industry(self)-> str:
+        """Select industry section of processed data of job description. and return 
+        industry of published vacancy.
+
+        Returns:
+            str: Industry of job string.
+        """
         return self._processed_data["industry"]
 
     def _get_location(self)-> str:
+        """Select location section of processed data of job description. and return 
+        job location of published vacancy.
+
+        Returns:
+            str: Location of job string.
+        """
         return self._processed_data["jobLocation"]["address"]["addressLocality"] + ", " +self._processed_data["jobLocation"]["address"]["addressCountry"]
 
     def _get_education_and_skills(self)-> List[str]:
+        """Select job specifications and requirements of job description then
+        filter education and skills and return them as string.
+
+        Returns:
+            List[str]: list of education, skills.
+        """        
         soup = BeautifulSoup(self._processed_data["description"], "html.parser")
         job_description_lines = soup.find_all("li")
         skills= []
@@ -52,6 +82,22 @@ class JobDescription:
         return [" ".join(education), " ".join(skills)]
 
     def get_data(self)-> Dict[str, str]:
+        """
+        1-Select Job title section of processed data of job description. and return 
+        Job title of published vacancy.
+
+        2-Select location section of processed data of job description. and return 
+        job location of published vacancy.
+
+        3-Select industry section of processed data of job description. and return 
+        industry of published vacancy.
+
+        4-Select job specifications and requirements of job description then
+        filter education and skills and return them as string.
+
+        Returns:
+            Dict[str, str]: "Job title", "Location", "Industry/domain", "Education degree", "Technical skills" details of required candidate.
+        """        
         return{
             "Job title": self._get_jobtitle(),
             "Location": self._get_location(),

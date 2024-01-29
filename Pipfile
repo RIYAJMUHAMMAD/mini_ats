@@ -13,9 +13,10 @@ numpy = "*"
 nltk = "*"
 scikit-learn = "*"
 torch = "*"
+streamlit = "*"
 
 [dev-packages]
 ipykernel = "*"
 
 [requires]
-python_version = "3.11"
+python_version = "3.9"
