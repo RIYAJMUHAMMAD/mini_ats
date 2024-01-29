@@ -1,0 +1,21 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+beautifulsoup4 = "*"
+requests = "*"
+pdfplumber = "*"
+transformers = "*"
+typing = "*"
+numpy = "*"
+nltk = "*"
+scikit-learn = "*"
+torch = "*"
+
+[dev-packages]
+ipykernel = "*"
+
+[requires]
+python_version = "3.11"
