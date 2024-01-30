@@ -9,5 +9,5 @@ Environment installation guide
 
 4- `streamlit run scoring_algorithm.py`
 
-Input- well found job url, resume path
+Input- well found job url, resume pdf file
 
