@@ -1,19 +1,20 @@
 import pdfplumber, re
 from transformers import pipeline
 from typing import Dict, List
+from io import BytesIO
 
 
 class Resume:
 
-    def __init__(self, file_path:str, model_path:str):
+    def __init__(self, file, model_path:str):
         """Initialize ner pipeline and read and clean resume text and plit in different headings.
 
         Args:
-            file_path (str): resume file path.
+            file (str): resume file path.
             model_path (str): huggingface model name or local model path
         """        
         self.ner_pipe = pipeline("token-classification", model=model_path, aggregation_strategy= "simple")
-        self.file_path = file_path
+        self.file = file
         self._splited_sections = self._split_section() 
 
     def _resume_text(self)-> str:
@@ -21,14 +22,15 @@ class Resume:
 
         Returns:
             str: Combined text of all pages of resume.
-        """        
+        """
         resume = "\n"
-        with pdfplumber.open(self.file_path) as pdf:
-            totalpages = len(pdf.pages)
-            for page_index in range(0 ,totalpages):
-                page1= pdf.pages[page_index]
-                resume = resume + "\n" +page1.extract_text()
-        return resume
+        content = self.file.read()
+        with pdfplumber.open(BytesIO(content)) as pdf:
+            text = ""
+            for page in pdf.pages:
+                text = text +"\n" + page.extract_text()
+        return text       
+
 
     def _split_section(self)-> List[str]:
         """Read resume and concatenate string of all the pages and return a single string.
@@ -166,6 +168,3 @@ class Resume:
             "Education degree": self._get_education(),
             "Technical skills": self._get_skills()
                 }
-
-    
-

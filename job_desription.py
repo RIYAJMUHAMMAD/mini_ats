@@ -1,6 +1,7 @@
 import json, requests, re
 from bs4 import BeautifulSoup
 from typing import Dict, List
+from io import BytesIO
 
 
 class JobDescription:
@@ -105,4 +106,3 @@ class JobDescription:
             "Education degree": self._get_education_and_skills()[0],
             "Technical skills": self._get_education_and_skills()[1]
                 }
-

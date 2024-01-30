@@ -57,7 +57,7 @@ class MatchingAlgo:
         return mean_pooled
         
         
-    def _find_similar_sentences(self, mean_pooled : np.ndarray) -> nd.ndarray :
+    def _find_similar_sentences(self, mean_pooled : np.ndarray) -> np.ndarray :
         """Compute similarity between pair on embeddings.
 
         Args:
