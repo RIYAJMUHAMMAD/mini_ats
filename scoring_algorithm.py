@@ -1,6 +1,6 @@
 import streamlit as st
 from resume import Resume
-from desription import JobDescription
+from job_desription import JobDescription
 from matching_engine import MatchingAlgo
 
 algorithm = MatchingAlgo('BAAI/bge-base-en-v1.5',256)
