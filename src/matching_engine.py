@@ -11,8 +11,8 @@ torch.manual_seed(2)
 class MatchingAlgo:
     
     def __init__(self, model_path_or_name: str, max_length : int):
-        self.tokenizer = AutoTokenizer.from_pretrained(model_path_or_name)
-        self.model = AutoModel.from_pretrained(model_path_or_name)
+        self.tokenizer = AutoTokenizer.from_pretrained(model_path_or_name, use_safetensors=True)
+        self.model = AutoModel.from_pretrained(model_path_or_name, use_safetensors=True)
         self.max_length = max_length
 
     def _tokenization(self, sent:List[str])-> Dict[str, torch.Tensor]:
