@@ -11,3 +11,4 @@ Environment installation guide
 
 Input- well found job url, resume pdf file
 
+If have docker better build docker image and run it in a dokcer container.
